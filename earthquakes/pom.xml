@@ -14,7 +14,7 @@
 	<name>earthquakes</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
-		<java.version>14</java.version>
+		<java.version>15</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -33,6 +33,11 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>de.grundid.opendatalab</groupId>
+			<artifactId>geojson-jackson</artifactId>
+			<version>1.8.1</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -41,6 +46,40 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-wadl2java-plugin</artifactId>
+				<version>2.4.1</version>
+			</plugin>
+			<plugin>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-wadl2java-plugin</artifactId>
+                <version>2.4.1</version>
+                <executions>
+                    <execution>
+                        <id>generate-sources</id>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <sourceRoot>${basedir}/target/generated/src/main/java</sourceRoot>
+                            <wadlOptions>
+                                <wadlOption>
+                                    <wadl>${basedir}/src/test/resources/wadl/bookstoreImport.xml</wadl>
+                                    <impl>true</impl>
+                                     
+                                    <packagename>org.apache.cxf.systest.jaxrs.codegen.service</packagename>
+                                    <schemaPackagenames>
+                                       <schemaPackagename>http://superbooks=org.apache.cxf.systest.jaxrs.codegen.schema</schemaPackagename>
+                                    </schemaPackagenames>
+                                     
+                                </wadlOption>
+                            </wadlOptions>
+                        </configuration>
+                        <goals>
+                            <goal>wadl2java</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 		</plugins>
 	</build>
 
